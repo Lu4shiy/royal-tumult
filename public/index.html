@@ -24,9 +24,17 @@
 
     <div class="center-area">
       <div id="game-log" class="log-parchment">Смута начинается...</div>
-      <button id="roll-dice-btn" class="action-btn">🎲 Бросить кубик</button>
-      <div class="dice-container">
-        <div id="dice-result" class="dice-box">?</div>
+      
+      <div class="ap-display">
+        Очки Действия: <span id="ap-value">0</span>
+      </div>
+
+      <div class="center-controls">
+        <button id="roll-dice-btn" class="action-btn">🎲 Бросить кубик</button>
+        <div class="dice-container">
+          <div id="dice-result" class="dice-box">?</div>
+        </div>
+        <button id="end-turn-btn" class="action-btn" disabled>Завершить ход</button>
       </div>
     </div>
 
@@ -35,9 +43,20 @@
       <div class="active-slots"></div>
     </div>
 
+    <!-- Твоя зона -->
     <div class="player-area bottom active-turn" id="player-bottom">
-      <div class="player-info"><span class="player-name">Вы</span> <span class="player-score">0 очков</span></div>
-      <!-- Здесь рука будет заполняться автоматически через JS -->
+      <div class="player-info">
+        <span class="player-name">Вы</span> 
+        <span class="player-score">Очки: <span id="my-score">0</span></span>
+        <span class="player-resources">
+          🪙 <span id="my-coins">0</span> | 💎 <span id="my-crystals">0</span>
+        </span>
+      </div>
+      
+      <!-- Твои выложенные карты -->
+      <div class="active-slots" id="my-active-slots"></div>
+      
+      <!-- Твоя рука -->
       <div class="my-hand" id="my-hand"></div>
     </div>
   </div>
