@@ -1,17 +1,24 @@
 :root {
-  --bg-dark: #120a06;
-  --bg-mid: #2a1a10;
-  --gold: #d4af37;
-  --text: #f0e0c0;
-  --card-bg: #3a2518;
-  --border-color: #5a3a20;
+  --bg-dark: #0a0503;
+  --bg-mid: #1f130b;
+  --gold: #e6b32a;
+  --gold-glow: rgba(230, 179, 42, 0.6);
+  --text: #f4ebd8;
+  --card-bg: linear-gradient(145deg, #3d2211, #2a1508);
+  --border-gold: #8b6b23;
+  --font-title: 'Cinzel', serif;
+  --font-text: 'Old Standard TT', serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: 'Georgia', serif;
-  background: radial-gradient(circle at center, var(--bg-mid), var(--bg-dark));
+  font-family: var(--font-text);
+  /* Текстура дерева и темный градиент */
+  background: 
+    radial-gradient(circle at center, rgba(42, 26, 16, 0.8) 0%, rgba(10, 5, 3, 1) 100%),
+    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.15) 10px, rgba(0,0,0,0.15) 20px);
+  background-color: var(--bg-dark);
   color: var(--text);
   height: 100vh;
   height: 100dvh;
@@ -20,57 +27,62 @@ body {
   user-select: none;
 }
 
-/* ===== Игровое поле (Сетка) ===== */
+/* ===== Игровое поле ===== */
 #game-board {
   display: grid;
   width: 100%;
   height: 100%;
-  padding: 10px;
-  gap: 10px;
-  /* Раскладка: верх, лево/центр/право, низ */
+  padding: 15px;
+  gap: 15px;
   grid-template-areas: 
     ". top ."
     "left center right"
     "bottom bottom bottom";
-  grid-template-rows: 1fr 2fr 1.2fr;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1.5fr 1.4fr;
+  grid-template-columns: 1fr 1.8fr 1fr;
 }
 
 /* ===== Зоны игроков ===== */
 .player-area {
-  background: rgba(0, 0, 0, 0.3);
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
+  background: rgba(20, 10, 5, 0.7);
+  border: 2px solid rgba(139, 107, 35, 0.3); /* Приглушенная золотая рамка */
+  border-radius: 16px;
   padding: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.5);
+  transition: all 0.3s ease;
 }
 
-.player-area.top { grid-area: top; border-color: #ff5555; }
-.player-area.left { grid-area: left; border-color: #5555ff; }
-.player-area.right { grid-area: right; border-color: #55ff55; }
-.player-area.bottom { 
-  grid-area: bottom; 
-  border-color: var(--gold); 
-  justify-content: flex-end;
+/* Подсветка твоей зоны */
+.player-area.active-turn {
+  border-color: var(--gold);
+  box-shadow: inset 0 0 30px rgba(230, 179, 42, 0.1), 0 0 15px var(--gold-glow);
 }
+
+.player-area.top { grid-area: top; }
+.player-area.left { grid-area: left; }
+.player-area.right { grid-area: right; }
+.player-area.bottom { grid-area: bottom; justify-content: flex-end; }
 
 .player-info {
   position: absolute;
-  top: -10px;
+  top: -12px;
   background: var(--bg-dark);
-  padding: 2px 10px;
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  font-size: 0.9rem;
+  padding: 4px 15px;
+  border: 1px solid var(--border-gold);
+  border-radius: 20px;
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  letter-spacing: 1px;
   white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.8);
 }
 
-.player-name { font-weight: bold; }
-.player-score { color: var(--gold); margin-left: 10px; }
+.player-score { color: var(--gold); margin-left: 8px; }
 
 /* ===== Центр ===== */
 .center-area {
@@ -79,138 +91,174 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 15px;
+  gap: 20px;
 }
 
-#game-log {
-  background: rgba(0,0,0,0.5);
-  padding: 10px;
-  border-radius: 8px;
+.log-parchment {
+  background: #e6d5b8;
+  color: #2a1508;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: bold;
   font-style: italic;
-  font-size: 0.9rem;
   text-align: center;
-  min-height: 40px;
+  min-height: 50px;
+  min-width: 250px;
+  box-shadow: inset 0 0 15px rgba(100, 50, 0, 0.5), 0 4px 8px rgba(0,0,0,0.6);
+  transform: rotate(-1deg);
 }
 
 .action-btn {
-  font-family: 'Georgia', serif;
-  font-size: 1.2rem;
-  padding: 10px 20px;
-  background: var(--card-bg);
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 12px 28px;
+  background: linear-gradient(to bottom, #8b0000, #4a0000);
   color: var(--gold);
   border: 2px solid var(--gold);
   border-radius: 8px;
   cursor: pointer;
-  transition: transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.2);
+  transition: all 0.15s ease;
 }
 
-.action-btn:active { transform: scale(0.95); }
+.action-btn:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.8), inset 0 2px 5px rgba(255,255,255,0.3), 0 0 15px var(--gold-glow);
+}
 
+.action-btn:active { transform: scale(0.96) translateY(2px); }
+
+.dice-container { perspective: 600px; }
 .dice-box {
-  width: 60px;
-  height: 60px;
-  background: #fff;
-  color: #000;
-  font-size: 2rem;
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #fff, #ccc);
+  color: #8b0000;
+  font-family: var(--font-title);
+  font-size: 2.5rem;
   font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.2), 0 10px 20px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.2);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* ===== Рука игрока (Карты) ===== */
+/* ===== Карты ===== */
 .my-hand {
   display: flex;
-  gap: 5px;
+  gap: 8px;
   justify-content: center;
   width: 100%;
   margin-top: 20px;
+  padding-bottom: 10px; /* Место для выпрыгивания карт */
 }
 
 .card-placeholder {
-  width: 60px;
-  height: 90px;
+  width: 90px;
+  height: 130px;
   background: var(--card-bg);
-  border: 2px solid var(--border-color);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.7rem;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-
-/* Мобильная адаптация */
-@media (max-width: 600px) {
-  #game-board {
-    grid-template-columns: 0.8fr 2fr 0.8fr;
-    padding: 5px;
-    gap: 5px;
-  }
-  .card-placeholder { width: 40px; height: 60px; font-size: 0.5rem; }
-  .player-info { font-size: 0.7rem; padding: 2px 5px; }
-}
-
-/* ==========================================
-   Стили для настоящих карт
-   ========================================== */
-.card-placeholder {
+  border: 2px solid var(--border-gold);
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: center;
   padding: 5px;
-  overflow: hidden;
+  color: var(--gold);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.5);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease, border-color 0.2s;
+  cursor: pointer;
+  position: relative; /* ВАЖНО: чтобы кружок стоимости не улетал */
+  flex-shrink: 0;
 }
 
-/* Цвета для разных типов карт (рамка) */
-.card-type-wealth { border-color: #e6b32a; } /* Золотой - богатство */
-.card-type-mult { border-color: #ff5555; }   /* Красный - множитель */
-.card-type-char { border-color: #55aaff; }   /* Синий - персонаж */
-.card-type-art { border-color: #ff8800; }    /* Оранжевый - артефакт */
-.card-type-eff { border-color: #aa55ff; }    /* Фиолетовый - эффект */
+@media (hover: hover) {
+  .card-placeholder:hover {
+    transform: translateY(-15px) scale(1.05);
+    box-shadow: 0 15px 25px rgba(0,0,0,0.8), 0 0 20px var(--gold-glow);
+    border-color: var(--gold);
+    z-index: 10;
+  }
+}
 
-/* Стоимость (кружок в углу) */
+/* Цвета для типов карт */
+.card-type-wealth { border-color: #e6b32a; }
+.card-type-mult { border-color: #ff5555; }
+.card-type-char { border-color: #55aaff; }
+.card-type-art { border-color: #ff8800; }
+.card-type-eff { border-color: #aa55ff; }
+
+/* Кружок стоимости (теперь он на месте) */
 .card-cost {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -8px;
+  right: -8px;
   background: #4a0000;
   border: 1px solid var(--gold);
   color: var(--gold);
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--font-title);
   font-weight: bold;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+  font-size: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.8);
   z-index: 2;
 }
 
 .card-emoji {
-  font-size: 2.5rem;
-  margin-top: 10px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  font-size: 2.2rem;
+  margin-top: 15px;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,0.5));
 }
 
 .card-name {
-  font-size: 0.75rem;
+  font-family: var(--font-title);
+  font-size: 0.7rem;
   font-weight: bold;
   text-align: center;
   line-height: 1.1;
   margin-bottom: 2px;
+  width: 100%;
 }
 
 .card-desc {
   font-family: var(--font-text);
-  font-size: 0.6rem;
-  color: #aaa;
+  font-size: 0.65rem;
+  color: #ccc;
   text-align: center;
-  line-height: 1;
+  line-height: 1.1;
   margin-bottom: 5px;
+  width: 100%;
+}
+
+/* Мобильная адаптация */
+@media (max-width: 900px) {
+  .card-placeholder { width: 70px; height: 100px; }
+  .card-emoji { font-size: 1.8rem; margin-top: 10px; }
+  .card-name { font-size: 0.6rem; }
+  .card-desc { font-size: 0.5rem; }
+  .card-cost { width: 20px; height: 20px; font-size: 0.8rem; top: -5px; right: -5px; }
+}
+
+@media (max-width: 600px) {
+  #game-board {
+    grid-template-columns: 0.6fr 1.5fr 0.6fr;
+    padding: 8px;
+    gap: 8px;
+  }
+  .my-hand { gap: 4px; }
+  .card-placeholder { width: 50px; height: 75px; padding: 2px; }
+  .card-emoji { font-size: 1.2rem; margin-top: 5px; }
+  .card-name { font-size: 0.5rem; }
+  .card-desc { display: none; } /* На маленьких экранах текст скрываем */
+  .action-btn { font-size: 0.9rem; padding: 8px 15px; }
 }
