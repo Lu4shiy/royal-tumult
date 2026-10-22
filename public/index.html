@@ -3,10 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1a0f08">
   <title>Королевская Смута</title>
+  <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <h1 style="color: gold; text-align: center; font-family: sans-serif;">🏰 Королевская Смута</h1>
-  <p style="text-align: center; color: white; background: black;">Страница загружена!</p>
+  <div id="game-board">
+    <!-- Соперник сверху -->
+    <div class="player-area top" id="player-top">
+      <div class="player-info"><span class="player-name">Игрок 3</span> <span class="player-score">0 очков</span></div>
+      <div class="active-slots"></div>
+    </div>
+
+    <!-- Соперник слева -->
+    <div class="player-area left" id="player-left">
+      <div class="player-info"><span class="player-name">Игрок 2</span> <span class="player-score">0 очков</span></div>
+      <div class="active-slots"></div>
+    </div>
+
+    <!-- Центральная зона -->
+    <div class="center-area">
+      <div id="game-log">Игра началась!</div>
+      <button id="roll-dice-btn" class="action-btn">🎲 Бросить кубик</button>
+      <div id="dice-result" class="dice-box">?</div>
+    </div>
+
+    <!-- Соперник справа -->
+    <div class="player-area right" id="player-right">
+      <div class="player-info"><span class="player-name">Игрок 4</span> <span class="player-score">0 очков</span></div>
+      <div class="active-slots"></div>
+    </div>
+
+    <!-- Моя зона (снизу) -->
+    <div class="player-area bottom" id="player-bottom">
+      <div class="player-info"><span class="player-name">Вы</span> <span class="player-score">0 очков</span></div>
+      <div class="my-hand" id="my-hand">
+        <!-- Тут будут карты -->
+        <div class="card-placeholder">Карта</div>
+        <div class="card-placeholder">Карта</div>
+        <div class="card-placeholder">Карта</div>
+        <div class="card-placeholder">Карта</div>
+        <div class="card-placeholder">Карта</div>
+        <div class="card-placeholder">Карта</div>
+        <div class="card-placeholder">Карта</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
