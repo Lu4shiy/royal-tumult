@@ -1,0 +1,90 @@
+:root {
+  --bg-dark: #1a0f08;
+  --bg-mid: #2a1a10;
+  --gold: #d4af37;
+  --gold-bright: #f4d76a;
+  --text: #f0e0c0;
+  --card-bg: #3a2518;
+  --font-family: 'Georgia', 'Times New Roman', serif;
+  --base-size: 16px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: var(--base-size); }
+
+body {
+  font-family: var(--font-family);
+  background: radial-gradient(ellipse at top, var(--bg-mid), var(--bg-dark));
+  color: var(--text);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+#game-root {
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  color: var(--gold);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+  opacity: 0.75;
+  margin-bottom: 2rem;
+  font-style: italic;
+}
+
+.status {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
+
+.status.connected {
+  color: #7dff7d;
+  opacity: 1;
+}
+
+button {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  min-width: 44px;
+  background: var(--card-bg);
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
+}
+
+@media (hover: hover) {
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.4);
+  }
+}
+
+button:active { transform: scale(0.96); }
+
+@media (min-width: 768px) {
+  :root { --base-size: 18px; }
+}
